@@ -4,6 +4,9 @@
   "description": "",
   "version": "0.0.1",
   "publisher": "sshDevelopmentUG",
+  "repository": {
+    "url": "https://github.com/ssh-Development/cnc-heidenhain-mbl.git/"
+  },
 	"author": {
 		"name": "Andreas Herderich",
 		"email": "a.herderich@sshdev.de",
@@ -56,25 +59,7 @@
 				"scopeName": "source.heidenhain",
 				"path": "./syntaxes/heidenhain.tmLanguage.json"
 			}
-		],
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "text-blocks",
-          "title": "Textbausteine",
-          "icon": "resources/package-explorer.svg"
-        }
-      ]
-    },
-    "views": {
-      "text-blocks": [
-        {
-          "type": "webview",
-          "id": "cnc-heidenhain.text-blocks-view",
-          "name": "Textbausteine"
-        }
-      ]
-    }
+		]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

@@ -69,7 +69,8 @@
         "comments": {
             "patterns": [
                 {
-                    "match": "\\*\\s+.+|\\*=+.+|\\*+ +.+|\\*\\n|^\\*+.+",
+                    "begin": "\\*",
+                    "end": "\\n",
                     "name": "comment.line.heidenhain"
                 },
                 {
@@ -78,8 +79,8 @@
                     "name": "comment.heidenhain"
                 },
                 {
-                    "begin": "\\x22",
-                    "end": "\\x22",
+                    "begin": "/",
+                    "end": "\\n",
                     "name": "comment.heidenhain"
                 }
             ]
@@ -119,7 +120,7 @@
                     "name": "constant.numeric.heidenhain"
                 },
                 {
-                    "match": "[0-9]+",
+                    "match": "^\\s*[0-9]+",
                     "name": "constant.numeric.heidenhain"
                 },
                 {
