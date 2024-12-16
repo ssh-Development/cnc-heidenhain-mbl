@@ -1,0 +1,176 @@
+{
+    "scopeName": "source.heidenhain",
+    "name": "Heidenhain",
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#prognumbers"
+        },
+        {
+            "include": "#coords"
+        },
+        {
+            "include": "#tools"
+        },
+        {
+            "include": "#speedsfeeds"
+        }
+    ],
+    "repository": {
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "\\b(IF|GOTO|UNDEFINED|DEFINED)",
+                    "name": "keyword.control"
+                },
+                {
+                    "match": "\\b(BEGIN|END|PGM|BLK|FORM|PLANE|SPATIAL|LABEL|LBL|COORD|ROT|TURN|RESET|STAY|TABLE|SEQ+(-|\\+)|MB|MAX)",
+                    "name": "support.function.heidenhain"
+                },
+                {
+                    "match": "\\b(LBL|REP)",
+                    "name": "support.function.heidenhain"
+                },
+                {
+                    "match": "\\b(TOOL|CALL|DEF)",
+                    "name": "keyword.control.heidenhain"
+                },
+                {
+                    "match": "\\b(STOP)",
+                    "name": "invalid.heidenhain"
+                },
+                {
+                    "begin": "\\b(CYCL|PATTERN)\\s\\b(DEF)",
+                    "end": "\\n",
+                    "name": "constant.path.heidenhain"
+                },
+                {
+                    "match": "(-|\\+|)([qQ])(?:[lLsSrR\\d])+",
+                    "name": "constant.path.heidenhain"
+                },
+                {
+                    "match": "\\b(ERROR|EXPORT|FOR|F-PRINT|PLC|SEND|SYSREAD|PROBE|SYSWRITE|IDX|ID|BOHRUNG|KREIS|NR|PRESET|TABOPEN|TABREAD|TABWRITE|WAIT)",
+                    "name": "constant.path.heidenhain"
+                },
+                {
+                    "match": "([mM])(?=-|\\d|\\[|#)-?(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "keyword.operator.quantifier.regexp.heidenhain"
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "match": "\\*\\s+.+|\\*=+.+|\\*+ +.+|\\*\\n|^\\*+.+",
+                    "name": "comment.line.heidenhain"
+                },
+                {
+                    "begin": ";",
+                    "end": "\\n",
+                    "name": "comment.heidenhain"
+                },
+                {
+                    "begin": "\\x22",
+                    "end": "\\x22",
+                    "name": "comment.heidenhain"
+                }
+            ]
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "match": "\\b(SIN)|\\b(COS)|\\b(TAN)|\\b(ASIN)|\\b(ACOS)|\\b(ATAN)|\\b(LN)|\\b(SQRT)|\\b(MOD)|\\b(EXP)|\\b(LEN)|\\b(ANG)",
+                    "name": "support.constant.math.heidenhain"
+                },
+                {
+                    "match": "\\b(IS|EQU|NE|GT|LT)",
+                    "name": "support.constant.math.heidenhain"
+                },
+                {
+                    "match": "(FIX)|(FUP)|(ROUND)|(ABS)|(INT)|(FRAC)|(NEG)|(LOG)|(SGN)",
+                    "name": "support.constant.math.heidenhain"
+                },
+                {
+                    "match": "(\\+)|(\\*)|(\\/)|(\\*\\*)",
+                    "name": "support.constant.math.heidenhain"
+                },
+                {
+                    "match": "(\\-)",
+                    "name": "invalid.heidenhain"
+                },
+                {
+                    "match": "([fF])([nN])+(?:\\s)+(?:\\d+)",
+                    "name": "support.constant.math.heidenhain"
+                }
+            ]
+        },
+        "prognumbers": {
+            "patterns": [
+                {
+                    "match": "[nN][0-9]+",
+                    "name": "constant.numeric.heidenhain"
+                },
+                {
+                    "match": "[0-9]+",
+                    "name": "constant.numeric.heidenhain"
+                },
+                {
+                    "match": "\\b(LN|LP|L|CC|CP|CR|CT|APPR|DEP)+",
+                    "name": "string.regexp.heidenhain"
+                }
+            ]
+        },
+        "coords": {
+            "patterns": [
+                {
+                    "match": "([xXyYzZiIjJkKnNtTuUvVwW]{1,2})(?=-|\\+|\\d|\\[|#)(-|\\+)?(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "string.heidenhain"
+                },
+                {
+                    "match": "([aAbBcC])(?=-|\\+|\\d|\\[|#)(-|\\+)?(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "string.heidenhain"
+                },
+                {
+                    "match": "(IPA|PR|PA)(-|\\+)*(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "string.heidenhain"
+                }
+            ]
+        },
+        "tools": {
+            "patterns": [
+                {
+                    "match": "([dD]|[rR])([lLrR])*(-|\\+)*(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "invalid.heidenhain"
+                },
+                {
+                    "match": "([hH])(?=-|\\d|\\[|#)-?(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "constant.character.heidenhain"
+                },
+                {
+                    "match": "([tT])(?=-|\\d|\\[|#)-?(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "constant.character.heidenhain"
+                }
+            ]
+        },
+        "speedsfeeds": {
+            "patterns": [
+                {
+                    "match": "([sS])(?:(P|A|B|C|Q|\\d))+(-|\\+)*(?:\\d+(?:\\.\\d*)?)?",
+                    "name": "constant.language.heidenhain"
+                },
+                {
+                    "match": "([fF])(?:(M|Q|A|X|\\d)+(?:\\d*)?)?",
+                    "name": "constant.language.heidenhain"
+                }
+            ]
+        }
+    }
+}
