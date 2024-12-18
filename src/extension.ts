@@ -131,57 +131,12 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 			collection.clear();
 			var diagnostics: vscode.Diagnostic[] = [];
 
-			var beginEndPgmName;
-
-			const validBeginLinePattern = /^\s*[0-9]*\s*BEGIN\s+PGM\s+(\w+)\s+(MM|INCH)$/g;
-			const validEndLinePattern = /^\s*[0-9]*\s*END\s+PGM\s+(\w+)\s+(MM|INCH)$/g;
 
 			for (var i = 0; i < document.lineCount; i++) {
 				var line = document.lineAt(i);
 				var text = line.text.toUpperCase();
 
-				if (i == 0) {
-					var match = validBeginLinePattern.exec(text);
-					if (!match) {
-						diagnostics.push({
-							code: undefined,
-							message: 'BEGIN Satz hat falsches format!',
-							range: line.range,
-							severity: vscode.DiagnosticSeverity.Error,
-							source: undefined,
-							relatedInformation: undefined
-						});
-					}
-					else {
-						beginEndPgmName = match[1];
-					}
-				}
-
-				if (i == document.lineCount - 1) {
-					var match = validEndLinePattern.exec(text);
-					if (!match) {
-						diagnostics.push({
-							code: undefined,
-							message: 'END Satz hat falsches format!',
-							range: line.range,
-							severity: vscode.DiagnosticSeverity.Error,
-							source: undefined,
-							relatedInformation: undefined
-						});
-					}
-					else {
-						if (beginEndPgmName != match[1]) {
-							diagnostics.push({
-								code: undefined,
-								message: 'Programmnamen stimmen nicht überein!',
-								range: line.range,
-								severity: vscode.DiagnosticSeverity.Error,
-								source: undefined,
-								relatedInformation: undefined
-							});
-						}
-					}
-				}
+				
 			}
 
 			collection.set(document.uri, diagnostics);
