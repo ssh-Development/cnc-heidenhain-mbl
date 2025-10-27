@@ -72,28 +72,6 @@ export function activate(context: vscode.ExtensionContext) {
 						symbols.push(symbol);
 						outlineSymbols.push(symbol);
 					}
-
-			
-
-					var match = toolCallPattern.exec(line.text);
-					if (match) {
-						var last = toolCallSymbols.at(-1);
-						if (last) {
-							last.range = new vscode.Range(last.range.start, line.range.start);
-						}
-
-						var text = match[1];
-						if(text != "")
-						{
-							var symbol = new vscode.DocumentSymbol('T ' + text, '', vscode.SymbolKind.Property, line.range, line.range);
-							toolCallSymbols.push(symbol);
-	
-							var last = outlineSymbols.at(-1);
-							if (last) {
-								last.children.push(symbol);
-							}
-						}
-					}
 				}
 
 				resolve(symbols);

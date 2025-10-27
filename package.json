@@ -2,7 +2,7 @@
   "name": "cnc-heidenhain-mbl",
   "displayName": "cnc-heidenhain-mbl",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "sshDevelopmentUG",
   "repository": {
     "url": "https://github.com/ssh-Development/cnc-heidenhain-mbl.git/"
