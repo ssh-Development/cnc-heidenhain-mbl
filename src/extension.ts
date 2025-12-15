@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { PropertyDefenition } from './toolCallModel';
 
 let diagnosticCollection: vscode.DiagnosticCollection;
 
@@ -98,24 +99,116 @@ export function activate(context: vscode.ExtensionContext) {
 		if (editor) {
 			updateDiagnostics(editor.document, diagnosticCollection);
 		}
-	}));
+	}))
 
 }
 
 function updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection): void {
 	if (document)
 		if (document.languageId == 'heidenhain') {
-
 			collection.clear();
 			var diagnostics: vscode.Diagnostic[] = [];
+			var lbls: string[] = [];
+			var lblDefinitions = new Map<string, vscode.Range>();
 
+			const lblPattern = /^\s*[0-9]*\s*LBL\s+(".+"|[0-9]+|)/i;
+			const lblCallPattern = /^\s*[0-9]*\s*CALL\s+LBL\s+(".+"|[0-9]+|)/i;
+
+			const toolCallPattern = /^\s*[0-9]*\s*TOOL\s+CALL\s+(".+"|[0-9]+|)/i;
+			const toolDefPattern = /^\s*[0-9]*\s*TOOL\s+DEF\s+(".+"|[0-9]+|)/i;
+
+			const escapeChar = /^\s*\//i;
+
+			var tNo: PropertyDefenition | undefined;
+			var definedtNo: PropertyDefenition | undefined;
+
+			for (var i = 0; i < document.lineCount; i++) {
+				var data = document.lineAt(i).text.split(';')
+				var line = document.lineAt(i);
+				var text = line.text.toUpperCase();
+				var pgmLine = data[0].toUpperCase();
+
+				if (pgmLine.match(escapeChar)) {
+					continue;
+				}
+
+				var match = toolCallPattern.exec(pgmLine);
+				if (match) {
+					var range = new vscode.Range(i, match.index, i, match.index + match[0].length);
+					tNo = { number: match[1], range: range };
+
+					if (definedtNo && tNo) {
+						if (definedtNo.number != tNo.number) {
+							diagnostics.push({
+								code: undefined,
+								message: 'Falsches Werkzeug vordefiniert!',
+								range: definedtNo.range,
+								severity: vscode.DiagnosticSeverity.Warning,
+								source: 'Augerufenes Werkzeug ist ' + tNo.number + '.',
+								relatedInformation: undefined
+							})
+						}
+
+						definedtNo = undefined;
+					}
+				}
+
+				var match = toolDefPattern.exec(pgmLine);
+				if (match) {
+					var range = new vscode.Range(i, match.index, i, match.index + match[0].length);
+					definedtNo = { number: match[1], range: range };
+				}
+
+				var match = lblPattern.exec(text)
+				if (match) {
+					if (lbls.includes(match[1])) {
+						diagnostics.push({
+							code: undefined,
+							message: 'Unterprogramm ist schon deklariert!',
+							range: line.range,
+							severity: vscode.DiagnosticSeverity.Error,
+							source: undefined,
+							relatedInformation: undefined
+						});
+					}
+
+					else {
+						lbls.push(match[1]);
+						lblDefinitions.set(match[1], line.range);
+					}
+				}
+			}
 
 			for (var i = 0; i < document.lineCount; i++) {
 				var line = document.lineAt(i);
 				var text = line.text.toUpperCase();
 
-				
+				var match = lblCallPattern.exec(text)
+				if (match) {
+					lblDefinitions.delete(match[3])
+					if (!lbls.includes(match[3])) {
+						diagnostics.push({
+							code: undefined,
+							message: 'Unterprogramm ist nicht vorhanden!',
+							range: line.range,
+							severity: vscode.DiagnosticSeverity.Warning,
+							source: undefined,
+							relatedInformation: undefined
+						});
+					}
+				}
 			}
+
+			lblDefinitions.forEach(element => {
+				diagnostics.push({
+					code: undefined,
+					message: 'Unterprogramm wird nie verwendet!',
+					range: element,
+					severity: vscode.DiagnosticSeverity.Information,
+					source: undefined,
+					relatedInformation: undefined
+				});
+			});
 
 			collection.set(document.uri, diagnostics);
 		} else {
