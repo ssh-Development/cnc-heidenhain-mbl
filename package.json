@@ -7,11 +7,11 @@
   "repository": {
     "url": "https://github.com/ssh-Development/cnc-heidenhain-mbl.git/"
   },
-	"author": {
-		"name": "Andreas Herderich",
-		"email": "a.herderich@sshdev.de",
-		"url": "https://sshdev.de"
-	},
+  "author": {
+    "name": "Andreas Herderich",
+    "email": "a.herderich@sshdev.de",
+    "url": "https://sshdev.de"
+  },
   "icon": "favicon.png",
   "engines": {
     "vscode": "^1.95.0"
@@ -35,32 +35,34 @@
       "editor/context": [
         {
           "command": "cnc-heidenhain-mbl.number",
-          "when":"editorLangId == heidenhain"
+          "when": "editorLangId == heidenhain"
         }
       ]
     },
     "languages": [
-    {
-      "id": "heidenhain",
-      "aliases": [
-        "Heidenhain"
-      ],
-      "extensions": [
-        ".h",".H"
-      ],
-      "icon": {
-        "dark": "./images/heidenhain.svg",
-        "light": "./images/heidenhain.svg"
-      },
-      "configuration": "./language-configuration.json"
-    }],
+      {
+        "id": "heidenhain",
+        "aliases": [
+          "Heidenhain"
+        ],
+        "extensions": [
+          ".h",
+          ".H"
+        ],
+        "icon": {
+          "dark": "./images/heidenhain.svg",
+          "light": "./images/heidenhain.svg"
+        },
+        "configuration": "./language-configuration.json"
+      }
+    ],
     "grammars": [
-			{
-				"language": "heidenhain",
-				"scopeName": "source.heidenhain",
-				"path": "./syntaxes/heidenhain.tmLanguage.json"
-			}
-		]
+      {
+        "language": "heidenhain",
+        "scopeName": "source.heidenhain",
+        "path": "./syntaxes/heidenhain.tmLanguage.json"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -74,17 +76,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.95.0",
     "@types/mocha": "^10.0.8",
     "@types/node": "20.x",
+    "@types/vscode": "^1.95.0",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@typescript-eslint/parser": "^8.7.0",
-    "eslint": "^9.11.1",
-    "typescript": "^5.6.2",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.95.0",
-    "webpack-cli": "^5.1.4",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.11.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4"
   }
 }
