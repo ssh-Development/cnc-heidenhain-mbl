@@ -2,7 +2,7 @@
   "name": "cnc-heidenhain-mbl",
   "displayName": "cnc-heidenhain-mbl",
   "description": "VSC Erweiterung für Heidenhain Dateien.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "sshDevelopmentUG",
   "repository": {
     "url": "https://github.com/ssh-Development/cnc-heidenhain-mbl.git/"

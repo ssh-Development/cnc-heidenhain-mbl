@@ -80,6 +80,30 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
+	context.subscriptions.push(vscode.languages.registerDefinitionProvider('heidenhain', {
+		provideDefinition(document: vscode.TextDocument,
+			position: vscode.Position, token: vscode.CancellationToken): Thenable<vscode.Location> {
+			return new Promise((resolve, reject) => {
+				const range = document.getWordRangeAtPosition(position);
+				const word = document.getText(range);
+				const line = document.lineAt(position.line).text;
+
+				const lblCallPattern = /^\s*[0-9]*\s*CALL\s+LBL\s+(".+"|[0-9]+|)/i;
+
+				var match = lblCallPattern.exec(line)
+				if (match) {
+					const pattern = new RegExp('^\\s*[0-9]*\\s*LBL\\s+' + match[1], 'i');
+					for (var i = 0; i < document.lineCount; i++) {
+						var searchLine = document.lineAt(i);
+						if (searchLine.text.match(pattern)) {
+							resolve(new vscode.Location(document.uri, searchLine.range))
+						}
+					}
+				}
+			})
+		}
+	}));
+
 	//#region Diagnostics
 
 	diagnosticCollection = vscode.languages.createDiagnosticCollection('go');
