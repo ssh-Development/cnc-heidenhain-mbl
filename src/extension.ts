@@ -99,13 +99,13 @@ export function activate(context: vscode.ExtensionContext) {
 		if (editor) {
 			updateDiagnostics(editor.document, diagnosticCollection);
 		}
-	}))
+	}));
 
 }
 
 function updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection): void {
-	if (document)
-		if (document.languageId == 'heidenhain') {
+	if (document) {
+		if (document.languageId === 'heidenhain') {
 			collection.clear();
 			var diagnostics: vscode.Diagnostic[] = [];
 			var lbls: string[] = [];
@@ -123,7 +123,7 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 			var definedtNo: PropertyDefenition | undefined;
 
 			for (var i = 0; i < document.lineCount; i++) {
-				var data = document.lineAt(i).text.split(';')
+				var data = document.lineAt(i).text.split(';');
 				var line = document.lineAt(i);
 				var text = line.text.toUpperCase();
 				var pgmLine = data[0].toUpperCase();
@@ -138,15 +138,15 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 					tNo = { number: match[1], range: range };
 
 					if (definedtNo && tNo) {
-						if (definedtNo.number != tNo.number) {
+						if (definedtNo.number !== tNo.number) {
 							diagnostics.push({
 								code: undefined,
 								message: 'Falsches Werkzeug vordefiniert!',
 								range: definedtNo.range,
 								severity: vscode.DiagnosticSeverity.Warning,
-								source: 'Augerufenes Werkzeug ist ' + tNo.number + '.',
+								source: 'Aufgerufenes Werkzeug ist ' + tNo.number + '.',
 								relatedInformation: undefined
-							})
+							});
 						}
 
 						definedtNo = undefined;
@@ -159,7 +159,7 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 					definedtNo = { number: match[1], range: range };
 				}
 
-				var match = lblPattern.exec(text)
+				var match = lblPattern.exec(text);
 				if (match) {
 					if (lbls.includes(match[1])) {
 						diagnostics.push({
@@ -173,8 +173,10 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 					}
 
 					else {
-						lbls.push(match[1]);
-						lblDefinitions.set(match[1], line.range);
+						if (match[1] !== "0") {
+							lbls.push(match[1]);
+							lblDefinitions.set(match[1], line.range);
+						}
 					}
 				}
 			}
@@ -183,10 +185,10 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 				var line = document.lineAt(i);
 				var text = line.text.toUpperCase();
 
-				var match = lblCallPattern.exec(text)
+				var match = lblCallPattern.exec(text);
 				if (match) {
-					lblDefinitions.delete(match[3])
-					if (!lbls.includes(match[3])) {
+					lblDefinitions.delete(match[1]);
+					if (!lbls.includes(match[1])) {
 						diagnostics.push({
 							code: undefined,
 							message: 'Unterprogramm ist nicht vorhanden!',
@@ -214,6 +216,7 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 		} else {
 			collection.clear();
 		}
+	}
 }
 
 // This method is called when your extension is deactivated
