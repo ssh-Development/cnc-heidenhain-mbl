@@ -1,7 +1,7 @@
 {
   "name": "cnc-heidenhain-mbl",
   "displayName": "cnc-heidenhain-mbl",
-  "description": "",
+  "description": "VSC Erweiterung für Heidenhain Dateien.",
   "version": "0.0.2",
   "publisher": "sshDevelopmentUG",
   "repository": {
@@ -12,6 +12,7 @@
 		"email": "a.herderich@sshdev.de",
 		"url": "https://sshdev.de"
 	},
+  "icon": "favicon.png",
   "engines": {
     "vscode": "^1.95.0"
   },
