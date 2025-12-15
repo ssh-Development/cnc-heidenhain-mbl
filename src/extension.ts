@@ -55,8 +55,10 @@ export function activate(context: vscode.ExtensionContext) {
 				var outlineSymbols: vscode.DocumentSymbol[] = [];
 				var toolCallSymbols: vscode.DocumentSymbol[] = [];
 
+				var activeSymbol: vscode.DocumentSymbol | undefined
+
 				const outlinePattern = /^\s*[0-9]*\s*\*(.+)/i;
-				const toolCallPattern = /^\s*[0-9]*\s*TOOL\s+CALL\s+(".+"|[0-9]+|)/i;
+				const toolCallPattern = /^\s*[0-9]*\s*TOOL\s+CALL\s+(".+"|[0-9]+|)\s+([XYZ]|)\s*(S[0-9]+|)\s*(F[0-9]+|)\s*(DL[+-][0-9.]+|)\s*(DR[+-][0-9.]+|)/i;
 
 				for (var i = 0; i < document.lineCount; i++) {
 					var line = document.lineAt(i);
@@ -71,6 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
 						var text = match[1];
 						var symbol = new vscode.DocumentSymbol(text, '', vscode.SymbolKind.Module, line.range, line.range);
 						symbols.push(symbol);
+						activeSymbol = symbol;
 						outlineSymbols.push(symbol);
 					}
 				}
