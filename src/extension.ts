@@ -55,7 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 				var outlineSymbols: vscode.DocumentSymbol[] = [];
 				var toolCallSymbols: vscode.DocumentSymbol[] = [];
 
-				var activeSymbol: vscode.DocumentSymbol | undefined
+				var activeSymbol: vscode.DocumentSymbol | undefined;
 
 				const outlinePattern = /^\s*[0-9]*\s*\*(.+)/i;
 				const toolCallPattern = /^\s*[0-9]*\s*TOOL\s+CALL\s+(".+"|[0-9]+|)\s+([XYZ]|)\s*(S[0-9]+|)\s*(F[0-9]+|)\s*(DL[+-][0-9.]+|)\s*(DR[+-][0-9.]+|)/i;
@@ -93,17 +93,17 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const lblCallPattern = /^\s*[0-9]*\s*CALL\s+LBL\s+(".+"|[0-9]+|)/i;
 
-				var match = lblCallPattern.exec(line)
+				var match = lblCallPattern.exec(line);
 				if (match) {
 					const pattern = new RegExp('^\\s*[0-9]*\\s*LBL\\s+' + match[1], 'i');
 					for (var i = 0; i < document.lineCount; i++) {
 						var searchLine = document.lineAt(i);
 						if (searchLine.text.match(pattern)) {
-							resolve(new vscode.Location(document.uri, searchLine.range))
+							resolve(new vscode.Location(document.uri, searchLine.range));
 						}
 					}
 				}
-			})
+			});
 		}
 	}));
 
@@ -182,8 +182,10 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 
 				var match = toolDefPattern.exec(pgmLine);
 				if (match) {
-					var range = new vscode.Range(i, match.index, i, match.index + match[0].length);
-					definedtNo = { number: match[1], range: range };
+					if (match[1] !== '') {
+						var range = new vscode.Range(i, match.index, i, match.index + match[0].length);
+						definedtNo = { number: match[1], range: range };
+					}
 				}
 
 				var match = lblPattern.exec(text);
