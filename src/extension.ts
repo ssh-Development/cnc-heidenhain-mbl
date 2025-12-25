@@ -161,6 +161,10 @@ function updateDiagnostics(document: vscode.TextDocument, collection: vscode.Dia
 
 				var match = toolCallPattern.exec(pgmLine);
 				if (match) {
+					if (match[1] == '') {
+						continue;
+					}
+
 					var range = new vscode.Range(i, match.index, i, match.index + match[0].length);
 					tNo = { number: match[1], range: range };
 

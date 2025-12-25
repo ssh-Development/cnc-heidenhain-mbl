@@ -2,9 +2,9 @@
 
 Diese Erweiterung ist für die visualisierung für Heidenhain Dateien.
 
-# 0.0.4
+# 0.0.7
 
-Viel Spaß !!!!
+Vordefinierte Werkzeuge fix!
 
 
 **Enjoy!**
